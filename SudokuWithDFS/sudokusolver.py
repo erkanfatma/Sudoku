@@ -7,7 +7,7 @@ import copy as cp
 import time
 from termcolor import colored
 
-class sudoku_solution(object):
+class SudokuSolverWithDFS(object):
     def __init__(self, sd):
         row = []
         col = []
@@ -16,20 +16,20 @@ class sudoku_solution(object):
                 if sd[i][j] == 0:
                     row.append(i)
                     col.append(j)
-        #first, we need to find all empty positions and mark them
+            # first, find all empty positions and mark them
         self.row = row
         self.col = col
         self.sd = sd
 
-
-    def order(self):# this function just help you accelerate your speed, just shrink the search tree, you can ignore it.
+    # this function just help to accelerate the speed, just shrink the search tree, can be ignored it.
+    def order(self):
         small_sudoku = [[],[],[], [],[],[], [],[],[]]
         for n in range(9):
             for m in range(9):
                 small_n = (m//3) + (n//3)*3
                 small_m = (m%3) + (n%3)*3
                 small_sudoku[n].append(self.sd[small_n][small_m])
-        #seond, we find 9 small sudokus to constrain available elements
+        # second, we find 9 small sudokus to constrain available elements
         sdt = np.transpose(self.sd) # sd transpose
         weight_value = []
         for i in range(len(self.row)):
@@ -48,46 +48,43 @@ class sudoku_solution(object):
         self.row = order_row
         self.col = order_col
 
-    def available(self, i):# find the available digits for the current empty box.
+    # find the available digits for the current empty box.
+    def available(self, i):
         small_sudoku = [[],[],[], [],[],[], [],[],[]]
         for n in range(9):
             for m in range(9):
                 small_n = (m//3) + (n//3)*3
                 small_m = (m%3) + (n%3)*3
                 small_sudoku[n].append(self.sd[small_n][small_m])
-        #seond, we find 9 small sudokus to constrain available elements
+        # second, we find 9 small sudokus to constrain available elements
         sdt = np.transpose(self.sd) # sd transpose
         available = []
         for val in [1,2,3,4,5,6,7,8,9]:
             if (val not in self.sd[self.row[i]]) and (val not in sdt[self.col[i]]) and (val not in small_sudoku[(self.row[i]//3)*3 + (self.col[i]//3)]):
                 available.append(val)
-        #print(i)
-        #print(self.sd[self.row[i]])
-        #print(sdt[self.col[i]])
-        #print(small_sudoku[(self.row[i]//3)*3 + (self.col[i]//3)])
-        #print(available)
         return available
         # judge if elements are qualified before taking
 
-
-    def fill(self, list):# fill the current state to check if it's right.
+    # fill the current state to check if it's right.
+    def fill(self, list):
         count = 0
         for i in range(len(list)):
             if list[i] != 0:
                 count += 1
             self.sd[self.row[i]][self.col[i]] = list[i]
-        #print(count)
-        #print(list)
-        #print(self.sd)
-        return count # how many elements it fill in
+        # how many elements it fill in
+        return count
 
     def depth_search(self):
-        self.order()#you know you can ignore this functioin,it's all right to delete this.
+        # this function can be ignored, it's all right to delete this
+        self.order()
         visited = 0
-        L = []# L is to store states.
+        # L is to store states.
+        L = []
         space = 0
 
-        exist = [0 for i in range(len(self.row))]# it will help us reset soduku back to original state if it's already calculated
+        # this statements reset soduku back to original state if it's already calculated
+        exist = [0 for i in range(len(self.row))]
         L.append(exist)
         while True:
             if space < len(L):
@@ -106,19 +103,17 @@ class sudoku_solution(object):
             L.pop()
             visited += 1
             if len(choice) == 0:
-                #print(L)
                 continue
 
             for val in choice:
                 exist[i] = val
-                #print(exist)
                 L.append(cp.deepcopy(exist))
         return self.sd, visited, space
 #visited is a value to display how many nodes we've visited during the whole process
 #space is a value to display how many memory we used but keep in mind, here the unit is a sudoku
 
 
-# DISPLAYS THE SOLVED SUDOKU IN THE GRID FORMAT
+# Display the solution of  sudoku in the grid format
 def display(board):
     for r in range(9):
         if r in [0, 3, 6]:
@@ -131,7 +126,7 @@ def display(board):
         print(end='\n')
 
 
-sd_diff = [[4,0,0, 0,0,0, 0,7,5],
+sd_game = [[4,0,0, 0,0,0, 0,7,5],
            [0,3,0, 0,0,0, 1,6,0],
            [0,0,0, 0,0,2, 0,0,0],
            [0,0,3, 7,0,0, 8,0,0],
@@ -143,22 +138,22 @@ sd_diff = [[4,0,0, 0,0,0, 0,7,5],
 
 if __name__ == '__main__':
     print(colored("Sudoku that will be solved", "blue"))
-    display(sd_diff)
+    display(sd_game)
     print("-------------------------------------------")
     print("\n")
 
-#below is what we trying to test the speed of depth first search algorithm
+    # to test the speed of depth first search algorithm
     print(colored("Congratulations! Sudoku solved", "blue"))
-    sudoku = sudoku_solution(sd_diff)
-    begin = time.time()
+    sudoku = SudokuSolverWithDFS(sd_game)
+    starttime = time.time()
     result, visited, space = sudoku.depth_search()
-    end = time.time()
+    endtime = time.time()
 
     display(result)
     print("-------------------------------------------")
 
     print(colored("\nThe algorithm took {0:0.1f} seconds to find solution"
-                  .format(end - begin), "blue"))
+                  .format(endtime - starttime), "blue"))
 
     print("Visited", colored( visited, "blue"))
     print("Space",colored( space,"blue"))
