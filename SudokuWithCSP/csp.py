@@ -1,4 +1,4 @@
-# this is a class to represent csp
+# to represent csp
 class CSP:
     def __init__(self, board):
         self.board = board
@@ -22,7 +22,7 @@ class CSP:
 
         return True
 
-    # helper function to evaluate completeness of a board
+    #  function to evaluate completeness of a board
     def complete_helper(self, board, row, col):
         if len(board) == 0:
             return False

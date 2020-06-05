@@ -6,7 +6,7 @@ from termcolor import colored
 from csp import *
 import time
 
-# DISPLAYS THE SOLVED SUDOKU IN THE GRID FORMAT
+# Display the solution of sudoku in the grid format
 def display(board):
     for r in range(9):
         if r in [0, 3, 6]:
@@ -83,13 +83,12 @@ def Back_Tracking_Search(csp):
     if csp.complete(csp.board):  # if assignment is complete then
         return True  # return assignment
 
-    # variable = Select-unassigned-variable(variables[csp], assignment, csp)
     empty_var = csp.find_empty(csp.board)
 
     if empty_var == None:
         return False
 
-    for domain_var in empty_var.domain:  # for eachvalue in Order-Domain-Value(variable, assignment, csp) do
+    for domain_var in empty_var.domain:  # for each value in Order-Domain-Value(variable, assignment, csp) do
         valid = is_valid_input(empty_var, domain_var, csp.board)
         if valid:  # if value is consistent with assignment given Constraints[csp] then
             csp.board[empty_var.row][empty_var.col].value = domain_var  # add {variable = value} to assignment
@@ -112,26 +111,26 @@ def main():
     # create CPS instance to represent the board
     csp = CSP(board)
 
-    # start timing
-    starttimer = time.time()
+    # start timer
+    starttime = time.time()
 
     # solution is boolean value. True when there's a solution. False otherwise
     solution = Back_Tracking_Search(csp)
 
     # stop timer
-    endtimer = time.time()
+    endtime = time.time()
 
     if solution == True:
         print(colored("Congratulations! Sudoku solved", "blue"))
         display(csp.board)
 
         print(colored("\nThe algorithm took {0:0.1f} seconds to find solution"
-                      .format(endtimer - starttimer), "blue"))
+                      .format(endtime - starttime), "blue"))
 
     else:
         print(colored("Sudoku provided has no solution", "blue"))
         print(colored("\nThe algorithm took {0:0.1f} seconds to find solution"
-                      .format(endtimer - starttimer), "blue"))
+                      .format(endtime - starttime), "blue"))
 
 
 if __name__ == "__main__":
