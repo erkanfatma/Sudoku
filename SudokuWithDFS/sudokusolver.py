@@ -137,7 +137,7 @@ sd_game = [[4,0,0, 0,0,0, 0,7,5],
            [0,4,9, 0,0,3, 0,0,0]]
 
 if __name__ == '__main__':
-    print(colored("Sudoku that will be solved", "blue"))
+    print(colored("\nSudoku that will be solved", "blue"))
     display(sd_game)
     print("-------------------------------------------")
     print("\n")
@@ -152,8 +152,8 @@ if __name__ == '__main__':
     display(result)
     print("-------------------------------------------")
 
-    print(colored("\nThe algorithm took {0:0.1f} seconds to find solution"
+    print(colored("\nThe algorithm took {0:0.3f} seconds to find solution"
                   .format(endtime - starttime), "blue"))
 
-    print("Visited", colored( visited, "blue"))
-    print("Space",colored( space,"blue"))
+    print("Number of nodes visited to solve sudoku : ", colored(visited, "green"))
+    print("Memory usage : ", colored(space, "green"))
