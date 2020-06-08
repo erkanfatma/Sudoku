@@ -21,6 +21,7 @@ def display(board):
 
 # returns a list of initialized variables
 def init_variables():
+    #çözülmek istenen sudoku tanımı
     lists_var = [[0, 7, 0, 0, 4, 2, 0, 0, 0],
                  [0, 0, 0, 0, 0, 8, 6, 1, 0],
                  [3, 9, 0, 0, 0, 0, 0, 0, 7],
@@ -33,6 +34,7 @@ def init_variables():
 
     for i in range(9):
         for j in range(9):
+            #to create Variable set in CSP
             var = Variable(i, j, lists_var[i][j])
             lists_var[i][j] = var
 
@@ -103,7 +105,6 @@ def Back_Tracking_Search(csp):
 
 
 def main():
-
     # create a 2D lists of variables
     board = init_variables()
     display(board)

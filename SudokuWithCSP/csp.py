@@ -59,7 +59,7 @@ class CSP:
 
         return True
 
-
+# to define empty cells and which numbers can be selected for this empty cell
 class Variable:
     def __init__(self, row, col, value=0):
         self.value = value
@@ -68,9 +68,11 @@ class Variable:
         self.domain = self.init_domain(value)
 
     # initializes domain of the variable
+    #to find domains of empty cell
     def init_domain(self, value):
         domain = []
         for i in range(1, 10):
+            #to evaluate domains if value can get these numbers
             if i != value:
                 domain.append(i)
 

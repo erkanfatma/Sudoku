@@ -5,7 +5,7 @@ import sys, time
 
 # board rule
 N = 0
-rule={9:[3, 3] }
+rule={9:[3, 3]}
 
 class Problem(object):
 
@@ -48,7 +48,7 @@ class Problem(object):
             for x in range(N):
                 b[state[row][x]] = False
                 b[state[x][col]] = False
-            """estabulish the number which showed up in small box"""
+            """establish the number which showed up in small box"""
             for x in range(rule[N][0]):
                 for y in range(rule[N][1]):
                     b[state[row//rule[N][0]*rule[N][0]+x][col//rule[N][1]*rule[N][1]+y]] = False
